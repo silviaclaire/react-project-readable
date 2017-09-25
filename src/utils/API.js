@@ -64,3 +64,50 @@ export const deletePost = (id) =>
       'Content-Type': 'application/json'
     }
   }).then(res => res.json())
+
+export const getComments = (parentId) =>
+  fetch(`${api}/posts/${parentId}/comments`, { headers })
+  .then(res => res.json())
+
+export const addComment = (body) =>
+  fetch(`${api}/comments`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  }).then(res => res.json())
+
+export const fetchComment = (id) =>
+  fetch(`${api}/comments/${id}`, { headers })
+  .then(res => res.json())
+
+export const voteComment = (id, option) =>
+  fetch(`${api}/comments/${id}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ option: option })
+  }).then(res => res.json())
+
+export const editComment = (id, body) =>
+  fetch(`${api}/comments/${id}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  }).then(res => res.json())
+
+export const deleteComment = (id) =>
+  fetch(`${api}/comments/${id}`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
