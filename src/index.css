@@ -3,3 +3,62 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+ul {
+  padding-left: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+button {
+  color: #2965A8;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #EAEAEA;
+}
+
+.container {
+  padding: 20px;
+}
+
+.add-sort {
+  font-weight: bold;
+}
+
+.list {
+  padding: 15px;
+  border-left: 1px solid #d5d8df;
+  border-right: 1px solid #d5d8df;
+  border-bottom: 1px solid #d5d8df;
+}
+
+.list-item {
+  margin: 5px;
+  border-top: 1px dashed #d5d8df;
+}
+
+.info {
+  padding-top: 10px;
+  font-size: small;
+  color: #7F7F7F;
+}
+
+.vote-edit-delete {
+  float: right;
+}
+
+.post-detail {
+  margin-top: 15px;
+  padding: 0px 20px 10px 20px;
+  border: 1px solid #d5d8df;
+}
+
+.comment-header {
+  padding-left: 5px;
+}
