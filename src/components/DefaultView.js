@@ -15,16 +15,64 @@ import UpVoteIcon from 'react-icons/lib/fa/caret-up'
 import DownVoteIcon from 'react-icons/lib/fa/caret-down'
 
 class DefaultView extends Component {
+  state = {
+    addPostModalOpen: false,
+    editPostModalOpen: false,
+  }
 
   componentDidMount() {
     this.props.getCategories()
     this.props.getPosts()
   }
 
+  openAddPostModal = () => {
+    this.setState(() => ({ addPostModalOpen: true }))
+    this.props.addPost({
+      id: '8xf0y6ziyjabvozdd253na',
+      timestamp: Date.now(),
+      title: 'Learning React is fun!',
+      body: 'You hear me.',
+      author: 'silviaclaire',
+      category: 'udacity'
+    })
+  }
+
+  closeAddPostModal = () => {
+    this.setState(() => ({ addPostModalOpen: false }))
+  }
+
+  openEditPostModal = (id) => {
+    this.setState(() => ({ editPostModalOpen: true }))
+  }
+
+  closeEditPostModal = (id) => {
+    this.setState(() => ({ editPostModalOpen: false }))
+  }
+
+  onSort = () => {
+    this.props.sortPosts()
+  }
+
+  onUpVotePost = (id) => {
+    console.log('upVote_id', id)
+    this.props.votePost(id, 'upVote')
+  }
+
+  onDownVotePost = (id) => {
+    console.log('downVote_id', id)
+    this.props.votePost(id, 'downVote')
+  }
+
+  onDeletePost = (id) => {
+    console.log('delete_id', id)
+    this.props.deletePost(id)
+  }
+
   render() {
     console.log('props',this.props)
     console.log('state',this.state)
     const { currentCategory, categories, posts, comments, sort } = this.props
+    const countComments = { '6ni6ok3ym7mf1p33lnez': 0, '8xf0y6ziyjabvozdd253nd': 2 }
 
     return (
       <div className='container'>
@@ -40,23 +88,23 @@ class DefaultView extends Component {
 
         <ul className='list'>
           <div className='add-sort'>
-            <button>[ + ]</button>
-            <button>[ Sort by: {sort.posts} ]</button>
+            <button onClick={()=>this.openAddPostModal()}>[ + ]</button>
+            <button onClick={()=>this.onSort()}>[ Sort by: {sort.posts} ]</button>
           </div>
           {posts.map((post) => (
             <li key={post.id} className='list-item'>
               <Link to={`/${post.category}/${post.id}`}><h4>{post.title}</h4></Link>
               <div className='vote-edit-delete'>
-                <button><UpVoteIcon /></button>
+                <button onClick={()=>this.onUpVotePost(post.id)}><UpVoteIcon /></button>
                 {post.voteScore}
-                <button><DownVoteIcon /></button>
-                <button><EditIcon /></button>
-                <button><DeleteIcon /></button>
+                <button onClick={()=>this.onDownVotePost(post.id)}><DownVoteIcon /></button>
+                <button onClick={()=>this.openEditPostModal(post.id)}><EditIcon /></button>
+                <button onClick={()=>this.onDeletePost(post.id)}><DeleteIcon /></button>
               </div>
               <div className='info'>
                 {moment(parseInt(post.timestamp,10)).calendar()}{', '}
                 author: {post.author}{', '}
-                comment: 0{', '}
+                comment: {`${countComments[post.id]}`}{', '}
                 category: {post.category}
               </div>
             </li>
