@@ -23,6 +23,10 @@ button:hover {
   background-color: #EAEAEA;
 }
 
+input {
+  width: 100%;
+}
+
 .container {
   padding: 20px;
 }
@@ -61,4 +65,8 @@ button:hover {
 
 .comment-header {
   padding-left: 5px;
+}
+
+.input-title {
+  font-weight: bold;
 }

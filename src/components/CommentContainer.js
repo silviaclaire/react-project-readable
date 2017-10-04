@@ -5,11 +5,15 @@ import EditIcon from 'react-icons/lib/fa/pencil'
 import DeleteIcon from 'react-icons/lib/fa/trash-o'
 import UpVoteIcon from 'react-icons/lib/fa/caret-up'
 import DownVoteIcon from 'react-icons/lib/fa/caret-down'
+import { Modal } from 'react-bootstrap'
 
 class CommentContainer extends Component {
   state = {
     editCommentModalOpen: false,
-    comment: []
+    comment: [],
+    editComment: {
+      body: ''
+    }
   }
 
   componentDidMount() {
@@ -20,8 +24,30 @@ class CommentContainer extends Component {
     API.fetchComment(this.props.commentId).then((comment) => this.setState({ comment }))
   }
 
-  openEditCommentModal = (id) => {
-    this.setState(() => ({ editCommentModalOpen: true }))
+  openEditCommentModal = (oldComment) => {
+    this.setState(() => ({
+      editCommentModalOpen: true,
+      editComment: {
+        body: oldComment.body
+      }
+    }))
+  }
+
+  updateEditComment = (newBody) => {
+    this.setState({
+      editComment: {
+        body: newBody
+      }
+    })
+  }
+
+  submitEditComment = (id, newComment) => {
+    let comment = {
+      timestamp: Date.now(),
+      body: newComment.body
+    }
+    API.editComment(id, comment).then((comment) => this.setState({ comment }))
+    this.closeEditCommentModal()
   }
 
   closeEditCommentModal = () => {
@@ -44,7 +70,7 @@ class CommentContainer extends Component {
   }
 
   render() {
-    const { comment } = this.state
+    const { comment, editCommentModalOpen, editComment } = this.state
 
     return (
       <div>
@@ -54,7 +80,7 @@ class CommentContainer extends Component {
               <button onClick={()=>this.onUpVoteComment(comment.id)}><UpVoteIcon /></button>
               {comment.voteScore}
               <button onClick={()=>this.onDownVoteComment(comment.id)}><DownVoteIcon /></button>
-              <button onClick={()=>this.openEditCommentModal(comment.id)}><EditIcon /></button>
+              <button onClick={()=>this.openEditCommentModal(comment)}><EditIcon /></button>
               <button onClick={()=>this.onDeleteComment(comment.id)}><DeleteIcon /></button>
             </div>
             <div className='info'>
@@ -64,6 +90,24 @@ class CommentContainer extends Component {
             {comment.body}
           </li>
         )}
+
+        <Modal
+          className='static-modal'
+          show={editCommentModalOpen}
+        >
+          <Modal.Body>
+            <input
+              className='input-body'
+              type="text"
+              value={editComment.body}
+              onChange={(e) => this.updateEditComment(e.target.value)}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <button onClick={()=>this.submitEditComment(comment.id, editComment)}>Save</button>
+            <button onClick={this.closeEditCommentModal}>Close</button>
+          </Modal.Footer>
+        </Modal>
       </div>
     )
   }
