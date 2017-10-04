@@ -17,10 +17,6 @@ class CommentContainer extends Component {
   }
 
   componentDidMount() {
-    this.updateComment()
-  }
-
-  updateComment() {
     API.fetchComment(this.props.commentId).then((comment) => this.setState({ comment }))
   }
 
@@ -55,18 +51,15 @@ class CommentContainer extends Component {
   }
 
   onUpVoteComment = (id) => {
-    API.voteComment(id, 'upVote')
-    this.updateComment()
+    API.voteComment(id, 'upVote').then((comment) => this.setState({ comment }))
   }
 
   onDownVoteComment = (id) => {
-    API.voteComment(id, 'downVote')
-    this.updateComment()
+    API.voteComment(id, 'downVote').then((comment) => this.setState({ comment }))
   }
 
   onDeleteComment = (id) => {
-    API.deleteComment(id)
-    this.updateComment()
+    API.deleteComment(id).then(this.setState({ comment: [] }))
   }
 
   render() {

@@ -20,12 +20,8 @@ class PostContainer extends Component {
   }
 
   componentDidMount() {
-    this.updatePost()
-    API.getComments(this.props.postId).then((comments) => this.setState({ comments }))
-  }
-
-  updatePost() {
     API.fetchPost(this.props.postId).then((post) => this.setState({ post }))
+    API.getComments(this.props.postId).then((comments) => this.setState({ comments }))
   }
 
   openEditPostModal = (oldPost) => {
@@ -69,18 +65,15 @@ class PostContainer extends Component {
   }
 
   onUpVotePost = (id) => {
-    API.votePost(id, 'upVote')
-    this.updatePost()
+    API.votePost(id, 'upVote').then((post) => this.setState({ post }))
   }
 
   onDownVotePost = (id) => {
-    API.votePost(id, 'downVote')
-    this.updatePost()
+    API.votePost(id, 'downVote').then((post) => this.setState({ post }))
   }
 
   onDeletePost = (id) => {
-    API.deletePost(id)
-    this.updatePost()
+    API.deletePost(id).then(this.setState({ post: [] }))
   }
 
   render() {
