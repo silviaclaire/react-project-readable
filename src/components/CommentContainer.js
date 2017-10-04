@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import * as API from '../utils/API'
+import { connect } from 'react-redux'
+import { fetchComment, voteComment, editComment, deleteComment } from '../actions/comment_actions'
 import moment from 'moment'
 import EditIcon from 'react-icons/lib/fa/pencil'
 import DeleteIcon from 'react-icons/lib/fa/trash-o'
@@ -10,14 +11,13 @@ import { Modal } from 'react-bootstrap'
 class CommentContainer extends Component {
   state = {
     editCommentModalOpen: false,
-    comment: [],
     editComment: {
       body: ''
     }
   }
 
   componentDidMount() {
-    API.fetchComment(this.props.commentId).then((comment) => this.setState({ comment }))
+    this.props.fetchComment(this.props.commentId)
   }
 
   openEditCommentModal = (oldComment) => {
@@ -42,7 +42,7 @@ class CommentContainer extends Component {
       timestamp: Date.now(),
       body: newComment.body
     }
-    API.editComment(id, comment).then((comment) => this.setState({ comment }))
+    this.props.editComment(id, comment)
     this.closeEditCommentModal()
   }
 
@@ -51,19 +51,20 @@ class CommentContainer extends Component {
   }
 
   onUpVoteComment = (id) => {
-    API.voteComment(id, 'upVote').then((comment) => this.setState({ comment }))
+    this.props.voteComment(id, 'upVote')
   }
 
   onDownVoteComment = (id) => {
-    API.voteComment(id, 'downVote').then((comment) => this.setState({ comment }))
+    this.props.voteComment(id, 'downVote')
   }
 
   onDeleteComment = (id) => {
-    API.deleteComment(id).then(this.setState({ comment: [] }))
+    this.props.deleteComment(id)
   }
 
   render() {
-    const { comment, editCommentModalOpen, editComment } = this.state
+    const { comment } = this.props
+    const { editCommentModalOpen, editComment } = this.state
 
     return (
       <div>
@@ -106,4 +107,19 @@ class CommentContainer extends Component {
   }
 }
 
-export default CommentContainer
+function mapStateToProps ({ comments }, { commentId }) {
+  return {
+    comment: comments[commentId],
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    fetchComment: (id) => dispatch(fetchComment(id)),
+    voteComment: (id, option) => dispatch(voteComment(id, option)),
+    editComment: (id, body) => dispatch(editComment(id, body)),
+    deleteComment: (id) => dispatch(deleteComment(id)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentContainer)

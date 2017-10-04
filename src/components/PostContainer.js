@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import * as API from '../utils/API'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { fetchPost, votePost, editPost, deletePost } from '../actions/post_actions'
 import moment from 'moment'
 import EditIcon from 'react-icons/lib/fa/pencil'
 import DeleteIcon from 'react-icons/lib/fa/trash-o'
@@ -11,7 +13,6 @@ import { Modal } from 'react-bootstrap'
 class PostContainer extends Component {
   state = {
     editPostModalOpen: false,
-    post: [],
     comments: [],
     editPost: {
       title: '',
@@ -20,7 +21,7 @@ class PostContainer extends Component {
   }
 
   componentDidMount() {
-    API.fetchPost(this.props.postId).then((post) => this.setState({ post }))
+    this.props.fetchPost(this.props.postId)
     API.getComments(this.props.postId).then((comments) => this.setState({ comments }))
   }
 
@@ -56,7 +57,7 @@ class PostContainer extends Component {
       title: newPost.title,
       body: newPost.body
     }
-    API.editPost(id, post).then((post) => this.setState({ post }))
+    this.props.editPost(id, post)
     this.closeEditPostModal()
   }
 
@@ -65,19 +66,20 @@ class PostContainer extends Component {
   }
 
   onUpVotePost = (id) => {
-    API.votePost(id, 'upVote').then((post) => this.setState({ post }))
+    this.props.votePost(id, 'upVote')
   }
 
   onDownVotePost = (id) => {
-    API.votePost(id, 'downVote').then((post) => this.setState({ post }))
+    this.props.votePost(id, 'downVote')
   }
 
   onDeletePost = (id) => {
-    API.deletePost(id).then(this.setState({ post: [] }))
+    this.props.deletePost(id)
   }
 
   render() {
-    const { post, comments, editPostModalOpen, editPost } = this.state
+    const { post } = this.props
+    const { comments, editPostModalOpen, editPost } = this.state
 
     return (
       <div>
@@ -131,4 +133,19 @@ class PostContainer extends Component {
   }
 }
 
-export default PostContainer
+function mapStateToProps ({ posts }, { postId }) {
+  return {
+    post: posts[postId],
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    fetchPost: (id) => dispatch(fetchPost(id)),
+    votePost: (id, option) => dispatch(votePost(id, option)),
+    editPost: (id, body) => dispatch(editPost(id, body)),
+    deletePost: (id) => dispatch(deletePost(id)),
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(PostContainer)
