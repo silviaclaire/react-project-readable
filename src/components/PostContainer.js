@@ -25,12 +25,12 @@ class PostContainer extends Component {
     API.getComments(this.props.postId).then((comments) => this.setState({ comments }))
   }
 
-  openEditPostModal = (oldPost) => {
+  openEditPostModal = (post) => {
     this.setState(() => ({
       editPostModalOpen: true,
       editPost: {
-        title: oldPost.title,
-        body: oldPost.body
+        title: post.title,
+        body: post.body
       }
     }))
   }
@@ -38,6 +38,7 @@ class PostContainer extends Component {
   updateEditPostTitle = (newTitle) => {
     this.setState({
       editPost: {
+        ...this.state.editPost,
         title: newTitle
       }
     })
@@ -46,18 +47,18 @@ class PostContainer extends Component {
   updateEditPostBody = (newBody) => {
     this.setState({
       editPost: {
+        ...this.state.editPost,
         body: newBody
       }
     })
   }
 
-  submitEditPost = (id, newPost) => {
-    let post = {
-      timestamp: Date.now(),
-      title: newPost.title,
-      body: newPost.body
+  submitEditPost = (id, post) => {
+    const newPost = {
+      ...post,
+      timestamp: Date.now()
     }
-    this.props.editPost(id, post)
+    this.props.editPost(id, newPost)
     this.closeEditPostModal()
   }
 

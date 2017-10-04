@@ -20,11 +20,11 @@ class CommentContainer extends Component {
     this.props.fetchComment(this.props.commentId)
   }
 
-  openEditCommentModal = (oldComment) => {
+  openEditCommentModal = (comment) => {
     this.setState(() => ({
       editCommentModalOpen: true,
       editComment: {
-        body: oldComment.body
+        body: comment.body
       }
     }))
   }
@@ -32,17 +32,18 @@ class CommentContainer extends Component {
   updateEditComment = (newBody) => {
     this.setState({
       editComment: {
+        ...this.state.editComment,
         body: newBody
       }
     })
   }
 
-  submitEditComment = (id, newComment) => {
-    let comment = {
-      timestamp: Date.now(),
-      body: newComment.body
+  submitEditComment = (id, comment) => {
+    const newComment = {
+      ...comment,
+      timestamp: Date.now()
     }
-    this.props.editComment(id, comment)
+    this.props.editComment(id, newComment)
     this.closeEditCommentModal()
   }
 
