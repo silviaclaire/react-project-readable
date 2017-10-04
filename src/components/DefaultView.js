@@ -95,7 +95,7 @@ class DefaultView extends Component {
   }
 
   render() {
-    const { currentCategory, categories, posts, sort } = this.props
+    const { currentCategory, categories, posts, sort, history } = this.props
     const { addPostModalOpen, addPost } = this.state
 
     return (
@@ -116,7 +116,7 @@ class DefaultView extends Component {
             <button onClick={()=>this.onSort()}>[ Sort by: {sort.posts} ]</button>
           </div>
           {posts.map((post) => (
-            <PostContainer key={post.id} postId={post.id}/>
+            <PostContainer key={post.id} postId={post.id} history={history}/>
           ))}
         </ul>
 

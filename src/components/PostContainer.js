@@ -76,6 +76,7 @@ class PostContainer extends Component {
 
   onDeletePost = (id) => {
     this.props.deletePost(id)
+    this.props.history.push('/')
   }
 
   render() {

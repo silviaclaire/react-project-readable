@@ -72,7 +72,7 @@ class PostView extends Component {
   }
 
   render() {
-    const { currentPostId, comments, sort } = this.props
+    const { currentPostId, comments, sort, history } = this.props
     const { addCommentModalOpen, addComment } = this.state
 
     return (
@@ -81,7 +81,7 @@ class PostView extends Component {
         <Link to='/'><HomeIcon size={18}/></Link>
 
         <div className='post-detail'>
-          <PostContainer postId={currentPostId}/>
+          <PostContainer postId={currentPostId} history={history}/>
         </div>
 
         <ul className='list'>
