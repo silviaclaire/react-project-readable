@@ -6,6 +6,7 @@ import { sortComments } from '../actions/sort_actions'
 import PostContainer from './PostContainer'
 import CommentContainer from './CommentContainer'
 import sortBy from 'sort-by'
+import _ from 'lodash'
 import HomeIcon from 'react-icons/lib/fa/home'
 
 class PostView extends Component {
@@ -86,7 +87,7 @@ class PostView extends Component {
 
 function mapStateToProps ({ comments, sort }, { match : { params : { id }}}) {
   const currentPostId = id
-  const showingComments = comments.sort(sortBy(sort.comments))
+  const showingComments = _.values(comments).sort(sortBy(sort.comments))
   return {
     currentPostId: currentPostId,
     comments: showingComments,

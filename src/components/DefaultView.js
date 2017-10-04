@@ -6,6 +6,7 @@ import { sortPosts } from '../actions/sort_actions'
 import PostContainer from './PostContainer'
 import { capitalize } from '../utils/helpers'
 import sortBy from 'sort-by'
+import _ from 'lodash'
 import { Nav, NavItem } from 'react-bootstrap'
 
 class DefaultView extends Component {
@@ -49,7 +50,7 @@ class DefaultView extends Component {
         <Nav bsStyle='tabs' activeHref={ currentCategory === 'all' ? '/' : `/${currentCategory}`}>
           <NavItem href='/'>All</NavItem>
           {categories.map((category) => (
-            <NavItem key={category} href={`/${category}`}>{capitalize(category)}</NavItem>
+            <NavItem key={category.path} href={`/${category.path}`}>{capitalize(category.name)}</NavItem>
           ))}
         </Nav>
 
@@ -69,12 +70,12 @@ class DefaultView extends Component {
 
 function mapStateToProps ({ categories, posts, sort }, { match : { params : { category }}}) {
   const currentCategory = category ? category : 'all'
-  const showingPosts = posts
-    .filter((post) => currentCategory === 'all' ? true : post.category === currentCategory)
-    .sort(sortBy(sort.posts))
+  const showingPosts = _.values(posts)
+                        .filter((post) => currentCategory === 'all' ? true : post.category === currentCategory)
+                        .sort(sortBy(sort.posts))
   return {
     currentCategory: currentCategory,
-    categories: categories,
+    categories: _.values(categories),
     posts: showingPosts,
     sort: sort
   }

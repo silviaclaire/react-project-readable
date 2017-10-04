@@ -6,21 +6,24 @@ import {
   EDIT_COMMENT,
   DELETE_COMMENT
 } from '../actions/comment_actions'
+import _ from 'lodash'
 
-export default function commentReducer (state = [], action) {
+export default function commentReducer (state = {}, action) {
+  const { comments, comment, id } = action
+
   switch (action.type) {
     case GET_COMMENTS :
-      return action.comments
+      return _.mapKeys(comments,'id')
     case ADD_COMMENT :
-      return [...state, action.comment]
+      return {...state, [comment.id]: comment}
     case FETCH_COMMENT :
-      return action.comment
+      return {...state, [comment.id]: comment}
     case VOTE_COMMENT :
-      return action.comment
+      return {...state, [comment.id]: comment}
     case EDIT_COMMENT :
-      return action.comment
+      return {...state, [comment.id]: comment}
     case DELETE_COMMENT :
-      return []
+      return _.omit(state, id)
     default :
       return state
   }
