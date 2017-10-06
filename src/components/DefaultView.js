@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getCategories } from '../actions/category_actions'
-import { getPostsByCategory, getPosts, addPost } from '../actions/post_actions'
+import { getPosts, addPost } from '../actions/post_actions'
 import { sortPosts } from '../actions/sort_actions'
+import NavTabs from './NavTabs'
 import PostContainer from './PostContainer'
-import { capitalize } from '../utils/helpers'
 import sortBy from 'sort-by'
 import _ from 'lodash'
-import { Nav, NavItem } from 'react-bootstrap'
 import { Modal } from 'react-bootstrap'
 import { guid } from '../utils/helpers'
 
@@ -23,7 +21,6 @@ class DefaultView extends Component {
   }
 
   componentDidMount() {
-    this.props.getCategories()
     this.props.getPosts()
   }
 
@@ -82,7 +79,6 @@ class DefaultView extends Component {
       timestamp: Date.now()
     }
     this.props.addPost(newPost)
-    console.log(newPost)
     this.closeAddPostModal()
   }
 
@@ -103,12 +99,7 @@ class DefaultView extends Component {
 
         <h1>Readable</h1>
 
-        <Nav bsStyle='tabs' activeHref={ currentCategory === 'all' ? '/' : `/${currentCategory}`}>
-          <NavItem href='/'>All</NavItem>
-          {categories.map((category) => (
-            <NavItem key={category.path} href={`/${category.path}`}>{capitalize(category.name)}</NavItem>
-          ))}
-        </Nav>
+        <NavTabs currentCategory={currentCategory} />
 
         <ul className='list'>
           <div className='add-sort'>
@@ -148,7 +139,7 @@ class DefaultView extends Component {
             />
             <select onChange={(e) => this.updateAddPostCategory(e.target.value)}>
               {categories.map((category) => (
-                <option key={category.path} value={`${category.path}`}>{capitalize(category.name)}</option>
+                <option key={category.path} value={`${category.path}`}>{category.name}</option>
               ))}
             </select>
           </Modal.Body>
@@ -178,8 +169,6 @@ function mapStateToProps ({ categories, posts, sort }, { match : { params : { ca
 
 function mapDispatchToProps (dispatch) {
   return {
-    getCategories: () => dispatch(getCategories()),
-    getPostsByCategory: (category) => dispatch(getPostsByCategory(category)),
     getPosts: () => dispatch(getPosts()),
     addPost: (body) => dispatch(addPost(body)),
     sortPosts: () => dispatch(sortPosts()),

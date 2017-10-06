@@ -32,19 +32,20 @@ input {
 }
 
 .add-sort {
+  padding-top: 5px;
   font-weight: bold;
 }
 
 .list {
-  padding: 15px;
+  padding: 10px;
   border-left: 1px solid #d5d8df;
   border-right: 1px solid #d5d8df;
   border-bottom: 1px solid #d5d8df;
 }
 
 .list-item {
-  margin: 5px;
-  border-top: 1px dashed #d5d8df;
+  padding: 10px;
+  border-bottom: 1px dashed #d5d8df;
 }
 
 .info {
@@ -58,9 +59,8 @@ input {
 }
 
 .post-detail {
-  margin-top: 15px;
-  padding: 0px 20px 10px 20px;
-  border: 1px solid #d5d8df;
+  border-left: 1px solid #d5d8df;
+  border-right: 1px solid #d5d8df;
 }
 
 .comment-header {

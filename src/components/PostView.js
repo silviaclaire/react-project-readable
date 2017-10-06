@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { getComments, addComment } from '../actions/comment_actions'
 import { sortComments } from '../actions/sort_actions'
+import NavTabs from './NavTabs'
 import PostContainer from './PostContainer'
 import CommentContainer from './CommentContainer'
 import sortBy from 'sort-by'
 import _ from 'lodash'
-import HomeIcon from 'react-icons/lib/fa/home'
 import { Modal } from 'react-bootstrap'
 import { guid } from '../utils/helpers'
 
@@ -72,13 +71,15 @@ class PostView extends Component {
   }
 
   render() {
-    const { currentPostId, comments, sort, history } = this.props
+    const { currentCategory, currentPostId, comments, sort, history } = this.props
     const { addCommentModalOpen, addComment } = this.state
 
     return (
       <div className='container'>
 
-        <Link to='/'><HomeIcon size={18}/></Link>
+        <h1>Readable</h1>
+
+        <NavTabs currentCategory={currentCategory} />
 
         <div className='post-detail'>
           <PostContainer postId={currentPostId} history={history}/>
@@ -86,7 +87,7 @@ class PostView extends Component {
 
         <ul className='list'>
           <div className='comment-header'>
-            <h4>Comments ({comments.length})</h4>
+            <big>Comments ({comments.length})</big>
           </div>
           <div className='add-sort'>
             <button onClick={()=>this.openAddCommentModal()}>[ + ]</button>
@@ -129,10 +130,12 @@ class PostView extends Component {
   }
 }
 
-function mapStateToProps ({ comments, sort }, { match : { params : { id }}}) {
+function mapStateToProps ({ comments, sort }, { match : { params : { category, id }}}) {
+  const currentCategory = category
   const currentPostId = id
   const showingComments = _.values(comments).sort(sortBy(sort.comments))
   return {
+    currentCategory: currentCategory,
     currentPostId: currentPostId,
     comments: showingComments,
     sort: sort
