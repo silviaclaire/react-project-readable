@@ -34,7 +34,7 @@ class DefaultView extends Component {
         title: '',
         body: '',
         author: '',
-        category: ''
+        category: 'react'
       }
     }))
   }
