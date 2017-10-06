@@ -63,7 +63,7 @@ export const deletePost = (id) =>
       ...headers,
       'Content-Type': 'application/json'
     }
-  }).then(res => res.json())
+  })
 
 export const getComments = (parentId) =>
   fetch(`${api}/posts/${parentId}/comments`, { headers })
