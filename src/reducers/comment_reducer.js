@@ -5,7 +5,7 @@ import {
   VOTE_COMMENT,
   EDIT_COMMENT,
   DELETE_COMMENT
-} from '../actions/comment_actions'
+} from '../actions/types'
 import _ from 'lodash'
 
 export default function commentReducer (state = {}, action) {

@@ -1,4 +1,4 @@
-import { SORT_POSTS, SORT_COMMENTS } from '../actions/sort_actions'
+import { SORT_POSTS, SORT_COMMENTS } from '../actions/types'
 
 const sortInitialState = { posts: '-voteScore', comments: '-voteScore' }
 

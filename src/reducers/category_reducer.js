@@ -1,4 +1,4 @@
-import { GET_CATEGORIES } from '../actions/category_actions'
+import { GET_CATEGORIES } from '../actions/types'
 import _ from 'lodash'
 
 export default function categoryReducer (state = {}, action) {

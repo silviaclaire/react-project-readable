@@ -1,6 +1,5 @@
 import * as API from '../utils/API'
-
-export const GET_CATEGORIES = 'GET_CATEGORIES'
+import { GET_CATEGORIES } from './types'
 
 export const getCategories = () => dispatch => (
   API.getCategories()

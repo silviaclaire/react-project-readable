@@ -1,11 +1,5 @@
 import * as API from '../utils/API'
-
-export const GET_COMMENTS = 'GET_COMMENTS'
-export const ADD_COMMENT = 'ADD_COMMENT'
-export const FETCH_COMMENT = 'FETCH_COMMENT'
-export const VOTE_COMMENT = 'VOTE_COMMENT'
-export const EDIT_COMMENT = 'EDIT_COMMENT'
-export const DELETE_COMMENT = 'DELETE_COMMENT'
+import { GET_COMMENTS, ADD_COMMENT, FETCH_COMMENT, VOTE_COMMENT, EDIT_COMMENT, DELETE_COMMENT } from './types'
 
 export const getComments = (parentId) => dispatch => (
   API.getComments(parentId)

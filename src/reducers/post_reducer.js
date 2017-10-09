@@ -5,7 +5,7 @@ import {
   VOTE_POST,
   EDIT_POST,
   DELETE_POST
-} from '../actions/post_actions'
+} from '../actions/types'
 import _ from 'lodash'
 
 export default function postReducer (state = {}, action) {
